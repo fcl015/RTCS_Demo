@@ -42,8 +42,6 @@ static unsigned int my_time=0;
 #define BUTTON_S5			PORTDbits.RA7
 #define BUTTON_S6			PORTDbits.RD7
 
-
-
 // MIPS40 - Run CPU at maximum speed 40MIPS (25ns), oscillator with PLL at 80Mhz
 // Primary (XT, HS, EC) Oscillator with PLL
 _FOSCSEL(FNOSC_PRIPLL);
@@ -54,6 +52,19 @@ _FWDT(FWDTEN_OFF);
 // Disable Code Protection
 _FGS(GCP_OFF);
 
+
+/* Clock set-up for 40MIPS */
+void clock_setup(void)
+{
+	/* PLL Configuration */
+	PLLFBD=38; 				// M=40
+	CLKDIVbits.PLLPOST=0; 	// N1=2
+	CLKDIVbits.PLLPRE=0; 	// N2=2
+	OSCTUN=0; 				// FRC clock use
+	RCONbits.SWDTEN=0; 		//watchdog timer disable
+	while(OSCCONbits.LOCK!=1); //wait for PLL LOCK
+
+}
 
 /* Program the Timer1 peripheral to raise interrupts */
 void T1_program(void)
@@ -361,16 +372,9 @@ TASK(Task4)
 
 int main(void)
 {
-	/* Clock setup for 40MIPS */
-	/* PLL Configuration */
-	PLLFBD=38; 				// M=40
-	CLKDIVbits.PLLPOST=0; 	// N1=2
-	CLKDIVbits.PLLPRE=0; 	// N2=2
-	OSCTUN=0; 				// FRC clock use
-	RCONbits.SWDTEN=0; 		//watchdog timer disable
-	while(OSCCONbits.LOCK!=1); //wait for PLL LOCK
 
-	/* Program Timer 1 to raise interrupts */
+	/* Clock set-up and program Timer 1 */
+	clock_setup();
 	T1_program();
 
 	/* Init leds as outputs*/

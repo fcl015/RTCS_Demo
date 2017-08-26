@@ -1,2 +1,2 @@
 # RTCS_Demo
-Demo program for the Explorer 16
+Demo program for the Explorer 16/32
