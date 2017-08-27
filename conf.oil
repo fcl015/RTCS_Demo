@@ -45,6 +45,7 @@ CPU mySystem {
 
 		CPU_DATA = PIC30 {
 			APP_SRC = "code.c";
+			APP_SRC = "boot_functions.c";
 			MULTI_STACK = FALSE;
 			ICD2 = TRUE;
 		};
