@@ -6,7 +6,7 @@
  */
 
 
-/* Include files for ERika kernel functions */
+/* Include files for Erika kernel functions */
 #include "ee.h"
 #include "ee_irq.h"
 
@@ -41,6 +41,22 @@ static unsigned int my_time=0;
 #define BUTTON_S4			PORTDbits.RD13
 #define BUTTON_S5			PORTDbits.RA7
 #define BUTTON_S6			PORTDbits.RD7
+
+// Function definitions
+void clock_setup(void);
+void T1_program(void);
+void T1_clear(void);
+
+void LCD_init(void);
+void put_LCD_initial_message(void);
+void put_LCD_float_value(float value);
+void put_LCD_integer_value(int value);
+
+void ADC1_init(void);
+void PWM_init(void);
+void Serial_Init(void);
+int Serial_Send(unsigned char data);
+void Serial_Send_Frame(unsigned char *ch, unsigned char len);
 
 // MIPS40 - Run CPU at maximum speed 40MIPS (25ns), oscillator with PLL at 80Mhz
 // Primary (XT, HS, EC) Oscillator with PLL
@@ -97,6 +113,14 @@ ISR2(_T1Interrupt)
 	LED_D4=PORTDbits.RD0;
 	/* count the interrupts, waking up expired alarms */
 	CounterTick(myCounter);
+}
+
+/* Initialize LCD and wait until it is ready */
+void LCD_init()
+{
+	EE_lcd_init();
+	EE_lcd_clear();
+	while(EE_lcd_busy());
 }
 
 
@@ -199,7 +223,7 @@ void put_LCD_integer_value(int value)
 
 /******************************************************************************************
  * Función:	ADC1_init()						     										  *
- * Descripción:	Configura ADC1.			 		          								  *
+ * Descripción:	Configure ADC1.			 		          								  *
  ******************************************************************************************/
 void ADC1_init(void)
 {
@@ -242,7 +266,7 @@ void ADC1_init(void)
 
 /******************************************************************************************
  * Función:	PWM_init()						     										  *
- * Descripción:	Configura PWM			 		          								  *
+ * Descripción:	Configure PWM			 		          								  *
  ******************************************************************************************/
 void PWM_init(void)
 {
@@ -370,6 +394,16 @@ TASK(Task4)
 	Serial_Send_Frame(BufferOut,6);
 }
 
+
+//******************************************************************************************
+// Main program
+//******************************************************************************************
+// Execute four tasks:
+//		- Blink a led every second
+//		- Read analog valur from pot and display it in the LCD
+//		- Press button and activate led
+//		- Transmit data through the serial port
+//******************************************************************************************
 int main(void)
 {
 
@@ -386,8 +420,7 @@ int main(void)
 	BUTTON_S3_CONFIG=1;		// Button S3
 
 	/* Init LCD */
-	EE_lcd_init();
-	EE_lcd_clear();
+	LCD_init();
 
 	/* Modules init */
 	ADC1_init();
