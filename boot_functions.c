@@ -56,22 +56,22 @@ void put_LCD_initial_message()
 {
 	EE_lcd_goto( 0, 0 );
 
-	EE_lcd_putc('R');
-	EE_lcd_putc('e');
-	EE_lcd_putc('a');
-	EE_lcd_putc('l');
-	EE_lcd_putc(' ');
-	EE_lcd_putc('T');
-	EE_lcd_putc('i');
-	EE_lcd_putc('m');
-	EE_lcd_putc('e');
-	EE_lcd_putc(' ');
-	EE_lcd_putc('-');
-	EE_lcd_putc(' ');
 	EE_lcd_putc('D');
+	EE_lcd_putc('a');
+	EE_lcd_putc('n');
+	EE_lcd_putc('i');
 	EE_lcd_putc('e');
-	EE_lcd_putc('m');
+	EE_lcd_putc('l');
+	EE_lcd_putc('e');
+	EE_lcd_putc('s');
+	EE_lcd_putc(' ');
+	EE_lcd_putc('Y');
+	EE_lcd_putc(' ');
+	EE_lcd_putc('R');
 	EE_lcd_putc('o');
+	EE_lcd_putc('j');
+	EE_lcd_putc('a');
+	EE_lcd_putc('s');
 
 }
 
