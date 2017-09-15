@@ -12,6 +12,8 @@
 
 /* Include files for my functions */
 #include "boot_functions.h"
+#include "io_devices.h"
+
 
 // MIPS40 - Run CPU at maximum speed 40MIPS (25ns), oscillator with PLL at 80Mhz
 // Primary (XT, HS, EC) Oscillator with PLL
@@ -26,26 +28,6 @@ _FGS(GCP_OFF);
 /* Global Variables */
 static unsigned int my_time=0;
 
-// Function definitions
-void ADC1_init(void);
-void PWM_init(void);
-void Serial_Init(void);
-int Serial_Send(unsigned char data);
-void Serial_Send_Frame(unsigned char *ch, unsigned char len);
-
-
-/* This is an ISR Type 2 which is attached to the Timer 1 peripheral IRQ pin
- * The ISR simply calls CounterTick to implement the timing reference
- */
-ISR2(_T1Interrupt)
-{
-	/* clear the interrupt source */
-	T1_clear();
-	/* Redirect PWM output OC1/RD0 to D4 led RA1 */
-	LED_D4=PORTDbits.RD0;
-	/* count the interrupts, waking up expired alarms */
-	CounterTick(myCounter);
-}
 
 
 /******************************************************************************************
@@ -175,6 +157,24 @@ void Serial_Send_Frame(unsigned char *ch, unsigned char len)
 	Serial_Send(*(ch++));
    }
 }
+
+
+
+
+
+/* This is an ISR Type 2 which is attached to the Timer 1 peripheral IRQ pin
+ * The ISR simply calls CounterTick to implement the timing reference
+ */
+ISR2(_T1Interrupt)
+{
+	/* clear the interrupt source */
+	T1_clear();
+	/* Redirect PWM output OC1/RD0 to D4 led RA1 */
+	LED_D4=PORTDbits.RD0;
+	/* count the interrupts, waking up expired alarms */
+	CounterTick(myCounter);
+}
+
 
 
 /******************************************************************************************
