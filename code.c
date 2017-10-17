@@ -12,6 +12,7 @@
 
 /* Include files for my functions */
 #include "boot_functions.h"
+#include "io_devices.h"
 
 // MIPS40 - Run CPU at maximum speed 40MIPS (25ns), oscillator with PLL at 80Mhz
 // Primary (XT, HS, EC) Oscillator with PLL
