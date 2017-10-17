@@ -52,7 +52,7 @@ void LCD_init()
 }
 
 /* Writes an initial message in the LCD display first row */
-void put_LCD_initial_message()
+void put_LCD_initial_message(char message[20])
 {
 	EE_lcd_goto( 0, 0 );
 

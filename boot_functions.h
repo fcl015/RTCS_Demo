@@ -45,7 +45,7 @@ void clock_setup(void);
 void T1_program(void);
 void T1_clear(void);
 void LCD_init(void);
-void put_LCD_initial_message(void);
+void put_LCD_initial_message(char message[20]);
 void put_LCD_float_value(float value);
 void put_LCD_integer_value(int value);
 
